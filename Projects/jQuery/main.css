@@ -1,0 +1,1226 @@
+/**
+ * Global MBS Styling
+ *
+ *
+ * Linear gradients work best with the IE filter property
+ * filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFC2B2B5', endColorstr='#FFFFFFFF');
+ * When using PIE, sometimes you need to trigger hasLayout and it might have
+ * strange z-index issues. If this is the case, add zoom: 1; position: relative;
+ * See http://css3pie.com/documentation/supported-css3-features/ for support
+ */
+
+/*
+Colors are:
+Red:   #CC0033
+Black: #000000
+White: #FFFFFF
+*/
+body {
+	font-family: Arial,sans-serif;
+	font-size: 11px;
+	text-align: left;
+}
+
+td {
+	padding: 1px;
+}
+
+a {
+	font-weight: normal;
+	text-decoration: none;
+}
+
+a:link,a:visited,a:hover,a:active {
+	color: #3E668C;
+}
+
+img {
+	border: none;
+}
+
+abbr, acronym {
+	cursor: help;
+	border-bottom: 1px dotted #3E668C;
+}
+
+img.loading-image {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+strong {
+	font-weight: bold;
+}
+
+#outer {
+	text-align: left;
+	min-height: 750px;
+}
+
+#header {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFC3C8C8', endColorstr='#FFFFFFFF'); /* for IE */
+	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFC3C8C8', endColorstr='#FFFFFFFF'); /* for IE */
+	-pie-background: linear-gradient(#C3C8C8, #FFFFFF);
+	background: -webkit-gradient(linear, left top, left bottom, from(#C3C8C8), to(#FFFFFF)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #C3C8C8,  #FFFFFF); /* for firefox 3.6+ */
+	height: 60px;
+	color: #333333;
+	text-align: left;
+	margin: 0 auto;
+}
+
+#user-directory-search {
+	float: right;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+#user-directory-search label {
+	width: 250px;
+	font-size: 11px;
+}
+
+#bodyblock {
+	color: #333333;
+	width: 100%;
+	height: 100%;
+	padding-bottom: 114px;
+	min-width: 980px;
+ }
+
+#footer {
+	font-size: 90%;
+	padding: 10px 0;
+	margin-top: 10px;
+	text-align: center;
+	color: #000;
+	background-color: #D3D3D3;
+	border-top: 1px solid #494949;
+ }
+
+#content {
+}
+
+#application {
+	background: #FFFFFF;
+	color: #000000;
+	text-align: left;
+	width: 100%;
+	height: 100%;
+}
+
+/* Form Styling */
+form {
+	margin: 0;
+	padding: 0;
+}
+
+.form_container {
+	font-size: 11px;
+	margin: 10px;
+	text-align: center;
+	vertical-align: middle;
+	border-right: 1px solid #808080;
+	border-bottom: 1px solid #808080;
+	border-left: 1px solid #808080;
+	/* relative and zoom are an IE hack for PIE */
+	behavior: url(/css/PIE.php);
+	position: relative;
+	zoom: 1;
+	border-radius: 10px 10px 0 0;
+	-moz-border-radius: 10px 10px 0 0;
+}
+.form_container_content {
+	margin: 0;
+	padding: 0;
+	border: none;
+	min-height: 200px;
+	/* IE min-height hack */
+	height: auto !important;
+	height: 200px;
+}
+
+.form_action_bar {
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 1.5;
+	min-height: 22px;
+/*	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe5e3e3', endColorstr='#ffb5b3b3');  for IE
+	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe5e3e3', endColorstr='#ffb5b3b3');  for IE */
+	-pie-background: linear-gradient(#e5e3e3, #b5b3b3);
+	background: -webkit-gradient(linear, left top, left bottom, from(#e5e3e3), to(#b5b3b3)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #e5e3e3,  #b5b3b3); /* for firefox 3.6+ */
+	/* set a border and pull a negative margin so we don't show a double
+	border of the container plus this*/
+	border: 1px solid #808080;
+	margin-left: -1px;
+	margin-right: -1px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 3px 0;
+	width: 100%;
+	behavior: url(/css/PIE.php);
+}
+
+.yui-skin-sam .yui-dt caption {
+	color: #000000;
+	font-size: 105%;
+	padding: 0.5em;
+	line-height: 14px;
+	font-style: italic;
+	font-weight: normal;
+	text-align: center;
+  	border: 1px solid #808080;
+	position: relative;
+	zoom: 1;
+	border-radius: 10px 10px 0 0;
+	-moz-border-radius: 10px 10px 0 0;
+  	-pie-background: linear-gradient(#e5e3e3, #b5b3b3);
+	background: -webkit-gradient(linear, left top, left bottom, from(#e5e3e3), to(#b5b3b3)); /* for webkit browsers */
+	background: -moz-linear-gradient(top,  #e5e3e3,  #b5b3b3); /* for firefox 3.6+ */
+	behavior: url(/css/PIE.php);
+}
+
+/* round off the corners if it is the first element in the form_container*/
+.form_container .form_action_bar.first{
+	/* relative and zoom are an IE hack for PIE */
+	behavior: url(/css/PIE.php);
+	position: relative;
+	zoom: 1;
+	border-radius: 10px 10px 0 0;
+	-moz-border-radius: 10px 10px 0 0;
+}
+
+.form_container .form_action_bar.last {
+	background: url("/javascript/yui/assets/skins/sam/sprite.png") repeat-x scroll 0 0 transparent;
+	/* container is relative so this will sit it at the bottom */
+	border-bottom: none;
+}
+
+.form_action_bar_red {
+	font-size: 13px;
+	height: 23px;
+	background-image: url(../images/action_bar_back_red.png);
+	border-bottom: .1em solid #494949;
+	border-top: .1em solid #494949;
+	text-align: center;
+	vertical-align: middle;
+	padding-top: 3px;
+	color: #FFFFFF;
+}
+
+.form_divider_wrapper {
+	height: 20px;
+	background-image: url(../images/form_divider_background.png);
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-top-width: .1em;
+	border-bottom-width: .1em;
+	border-top-color: #494949;
+	border-bottom-color: #494949;
+	text-align: left;
+}
+
+.form_divider {
+	height: 20px;
+	padding-top: 2px;
+	font-size: 12px;
+	color: #000000;
+	text-indent: 10px;
+	display: block;
+	font-weight: bold;
+}
+
+.form_wrapper{
+	border: solid;
+	border-width: .1em;
+	border-color: #000000;
+	background-color: #F5F3EB;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin: 10px;
+}
+
+#search_bar {
+	font-size: 11px;
+	color: #000000;
+	background-color: #ECE8E8;
+	text-align: left;
+	border: .1em solid #494949;
+	margin: 1em;
+	padding-top: 3px;
+	padding-right: 3px;
+	padding-bottom: 10px;
+	padding-left: 3px;
+	text-indent: 5px;
+}
+
+.table_footer {
+	background-color: #FFFFD5;
+	height: 20px;
+	border-top-width: 0.1em;
+	border-bottom-width: 0.1em;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-top-color: #666666;
+}
+
+.table_footer td {
+	font-size: 12px;
+}
+
+/* Start INFO tables */
+table.info {
+	margin: .1em auto;
+	border-collapse: collapse;
+	font-size: 12px;
+	text-align: left;
+}
+
+table.info a {
+	font-weight: bold;
+	color: #003366;
+	text-decoration: underline;
+}
+
+table.info tr {
+
+}
+
+table.info .field_desc {
+	color: #003366;
+	text-align: left;
+}
+
+table.info th {
+	background: url("/javascript/yui/assets/skins/sam/sprite.png") repeat-x scroll 0 0 transparent;
+	height: 30px;
+	color: #000000;
+	padding-right: 5px;
+	padding-left: 5px;
+	border: .1em solid #494949;
+	border-collapse: collapse;
+
+}
+
+table.info td {
+	padding: 5px;
+}
+
+
+table.info td.CodePrefix{
+	padding: 0;
+	margin: 0;
+}
+
+table.info td.CodePrefix > div {
+	padding: 0;
+	margin: 0;
+	font-size: 11px;
+}
+
+
+/* END INFO tables */
+
+
+/* Alert Styles */
+#message{
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+	background-color: #FCFA94;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	text-align: center;
+
+}
+
+.message{
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+	background-color: #FCFA94;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	text-align: center;
+}
+
+.instructions {
+	width: 98%;
+	color: #990033;
+	height: 15px;
+	padding: 5px;
+	font-weight: bold;
+}
+
+#alert {
+	background-color: #FCFA94;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	text-align: center;
+	font-size: 11px;
+	color: #990000;
+	/* height: 29px; */
+	width: 300px;
+	text-align: center;
+	vertical-align: middle;
+	padding-top: 3px;
+}
+
+#module_menu_container
+{
+	margin: 0 0 5px 0;
+	z-index: 1; /* fix for showing over YUI TabView */
+}
+
+/* help pages */
+.help_container {
+	padding: 12px;
+ 	min-height: 100%;
+ 	width: 90%;;
+}
+
+/* This class is placed on the HTML Panel Container element
+ * whenever it is loading data.
+ */
+.HTMLPanelLoading {
+	background-image: url(../images/ajax-loader.gif);
+	background-repeat: no-repeat;
+	background-position: left center;
+	text-indent: 34px;
+	height: 30px;
+	padding-top: 12px;
+	width: 300px;
+	text-align: left;
+	clear: both;
+	margin: auto;
+}
+
+/* This class is placed on the HTML Panel Container element
+ * when a load request has failed.
+ */
+
+.HTMLPanelError {
+
+}
+/* These classes are used to hide any HTML Panel state markup
+ * within an HTML Panel container.
+ */
+.HTMLPanelLoadingContent, .HTMLPanelErrorContent {
+	display: none;
+}
+
+.ajaxLink {
+	color: #003366;
+	cursor: pointer;
+	font-weight: bold;
+}
+.ajaxLink:hover {
+	color: #003366;
+	cursor: pointer;
+	font-weight: bold;
+	color:#961313;
+}
+
+.tooltip {
+	color: #000000;
+	background-color: #FCFA94;
+	padding: 5px;
+	border: 1px solid black;
+	display: none;
+}
+
+.div-form label {
+	display: block;
+	width: 50%;
+	float: left;
+	text-align: right;
+	position: relative;
+}
+
+.div-form .input-div {
+	clear: both;
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+div.document {
+	border : 1px solid #494949;
+	color : #000000;
+	width : 98%;
+	margin : 5px;
+	padding : 5px;
+}
+
+div.document div {
+	font-weight: bold;
+}
+
+div.document:hover {
+	background-image: url(../images/th_back.png);
+}
+
+table.caps-detail {
+ 	border-collapse : separate;
+}
+
+table.caps-detail .detail-item {
+	background-color : #eeeeee;
+}
+
+.caps-detail .highlight {
+	font-weight : bold;
+}
+
+
+legend {
+	color: #000000;
+	height: 16px;
+}
+
+/*******************
+ Report Request CSS
+*******************/
+table.req_status {
+	border-style: solid;
+	border-collapse: collapse;
+	border-width: 1px;
+	font-size: 12px;
+}
+
+.req_status_header {
+	font-size: 13px;
+	text-align: center;
+	vertical-align: middle;
+	background-image: url(../images/th_back.png);
+	padding-top: 3px;
+	height: 23px;
+}
+
+table.req_status td {
+	border-style: solid;
+	border-width: 1px;
+	padding: 5px;
+	text-align: center;
+}
+
+.no_request {
+	padding: 5px;
+	font-weight: bolder;
+	text-align: center;
+	font-size: 16px;
+}
+
+/*******************
+ Menu and Debug CSS
+*******************/
+#Application-Menu, #debug-toolbar{
+	z-index:10;
+}
+
+/*******************
+ Debug Toolbar CSS
+*******************/
+
+#debug-toolbar {
+	width: 100%;
+	height: 24px;
+	border-top:
+	1px solid #333333;
+	position: fixed;
+	left: 0;
+	bottom: 0px;
+	background-image: url(../images/app_location_background.png);
+	text-align: left;
+}
+
+#debug-toolbar .tab {
+	float: left;
+	color: #333333;
+	cursor: pointer;
+	padding: 6px;
+	width: 120px;
+	text-align: center;
+	border-right: 1px solid #333333;
+}
+
+#debug-toolbar .panel {
+	width: 90%;
+	max-width: 600px;
+	height: 50%;
+	max-height: 400px;
+	position: fixed;
+	left: 0px;
+	bottom: 25px;
+	background-color: #FFFFFF;
+	border: 1px solid #333333;
+	overflow: auto;
+	z-index : 999;
+}
+
+#debug-toolbar .panel-hidden {
+	display: none;
+}
+
+#debug-toolbar .panel .panel-line {
+	padding : 5px;
+	border-bottom: 1px solid #cc0000;
+}
+
+#debug-toolbar .panel .uri {
+	padding : 5px;
+	background-color: #cccccc;
+	border-bottom: 1px solid #cc0000;
+}
+
+#debug-webservices .panel-line span {
+	font-weight : bold;
+	color : #666666;
+}
+
+#debug-webservices .panel-line .parameters {
+	font-weight: bold;
+	font-size: 1em;
+}
+
+#debug-webservices .panel-line .elapsed {
+	text-align: right;
+	color: green;
+	font-size: 0.8em;
+}
+
+#debug-webservices .panel-line .warm {
+    color: orange;
+    font-weight:bold;
+}
+
+#debug-webservices .panel-line .hot {
+    color: red;
+    font-weight:bold;
+}
+
+/* soapxml should be normal weight */
+#debug-webservices .panel-line .parameters pre {
+	font-weight: normal;
+}
+
+/* -- GSH styles --*/
+#search_bar {
+	margin: 2px;
+	padding: 5px;
+	text-align: left
+}
+
+#search_bar label {
+	padding: 0px 5px 0px 5px;
+}
+
+#hd {
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.st table {
+	margin: 0px;
+	padding: 0px;
+	text-align: left
+}
+
+#plans_div1 li {
+	cursor: pointer
+}
+
+div.workarea {
+	padding: 0px 5px;
+	float: left;
+}
+
+ul.draglist {
+	position: relative;
+	width: 300px;
+	height: 410px;
+	background: #f7f7f7;
+	border: 1px solid silver;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+
+ul.draglist li {
+	margin: 1px;
+	cursor: move;
+	zoom: 1;
+	padding-left: 2px;
+}
+
+li.list1 {
+	background-color: #D1E6EC;
+	border: 1px solid #7EA6B2;
+
+}
+
+#user_actions {
+	float: right;
+}
+.plan {
+	font-size: 11px;
+	background-color: #FFFFFF;
+	color: #111111;
+	border: 1px solid gray;
+	padding: 2px;
+	margin: 2px;
+	width: 100%;
+	height: 100%
+	}
+.plan legend {color: #111111}
+.plan td {text-align: left}
+.bd label {font-weight: bold;font-size: 12px;}
+.plan th {
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+	background-color: #fefece;
+	padding-left: 3px;
+	text-align: left
+	}
+#plan_holder .hd,  #plan_holder .bd,  #plan_holder .ft { border: 0px;padding: 1px;margin: 2px;}
+#plan_holder {border: 1px solid silver;}
+.lidd {cursor: pointer; position: absolute; right: 7px; color: blue;}
+.date_select {
+border: 1px gray solid;
+padding: 5px;
+height: 30px;
+position: relative
+}
+.date_select input {cursor: pointer}
+#calContainer { display: none; position: absolute;top: 30px;left: 5px;  z-index: 3000}
+#search_bar td {vertical-align: top;text-align: left;white-space: nowrap;padding: 0px}
+#start_date {cursor: pointer}
+#end_date {cursor: pointer}
+input[title*="search_dates"] {cursor: pointer}
+span.checkbox {
+clear: left;
+display: block;
+float: left;
+height: 25px;
+padding: 0 5px 0 0;
+}
+.tier, .share tr:hover {background-color: #ffff90}
+.tier tr {height: 10px;width: 100%;vertical-align: top;background-color: #ffff90;white-space: nowrap;}
+.tier td {padding-left: 10px;width: 100px;}
+.tier .tdTierRmBtn input {padding: 0px; font-size: 10px; color: red}
+.tier input {padding: 0px; font-size: 10px; color: red}
+.tier .tdTierRmBtn {padding: 0px;}
+.tier  th {padding: 0px;}
+#ul1 span:hover {text-decoration: underline}
+.comp_row div:hover {
+	background-color: #ffff90;
+}
+/* -- GSH styles end --*/
+.tier_search {
+white-space: nowrap;
+margin: 0px;
+padding: 2px;
+}
+.tier-search tr{background-color: #ddffdd;font-size: 11px}
+.tier-search tr:hover{background-color: #adfdad}
+.tier-search td{text-align: right}
+.yui-pe .yui-pe-content {display: none;}
+ul.yui-nav > li > a > em {font-size: 11px;}
+
+
+
+/**
+ * Loading Modal styles
+ * @see YAHOO.mbs.loadingMask
+ */
+
+/* structure and layout */
+div#loading-modal {
+	text-align: center;
+}
+div#loading-modal div {
+	color: #961313;
+}
+div#loading-modal p {
+	font-size: 10px;
+	line-height: 30px; /* 30 to clear the loading gif*/
+	padding-left: 27px;
+    background-image: url(/images/ajax-loader.gif);
+    background-position: left center;
+	background-repeat: no-repeat;
+}
+
+.inline-loading-notfication {
+	line-height: 30px; /* 30 to clear the loading gif*/
+	text-indent: 30px;
+    background-image: url(/images/ajax-loader.gif);
+    background-position: left center;
+	background-repeat: no-repeat;
+}
+
+/**
+ * Confirm dialog styles
+ */
+div#confirm-dialog {
+	text-align: center;
+}
+div#confirm-dialog p.question {
+    font-style: italic;
+    font-size: 14pt;
+	line-height: 16pt;
+}
+
+
+/**
+ * background images for the quick nav context menu or other things that want them
+ */
+.quickjump a {
+	line-height: 24px;
+	margin-left: 5px;
+	text-indent: 10px;
+	/* will be overridden in subsequent styles */
+	background-image: url("/images/banko/company_sm.gif");
+	background-position: left center;
+	background-repeat: no-repeat;
+}
+	/* first level showing company details */
+	.quickjump .company > a {
+		background-image: none;
+		text-indent: 0 !important;
+		margin-left: 0 !important;
+	}
+
+	.quickjump .companyname {
+		font-size: 105%;
+		font-weight: bold;
+	}
+
+	.quickjump .product {
+		font-style: italic;
+	}
+
+	.quickjump .productid {
+		font-style: italic;
+	}
+
+	/* main acctls menu */
+	.quickjump .accounting-tools > a {
+		background-image: url("/images/acctls/company_accounting_sm.gif");
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+		/* sub items to accounting-tools*/
+		.quickjump .accounting-tools .company-accounting > a {
+			background-image: url("/images/acctls/company_accounting_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+		.quickjump .accounting-tools .post-cash > a,
+		.quickjump .accounting-tools .unapplied-cash > a {
+			background-image: url("/images/acctls/cash_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+	/* main mbsadmin menu */
+	.quickjump .global-support-tools > a {
+		background-image: url("/images/mbsadmin/mbsadmin_sm.gif");
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+		/* sub items to global-support-tools */
+		.quickjump .global-support-tools .invoice-viewer > a {
+			background-image: url("/images/mbsadmin/invoices_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+		.quickjump .global-support-tools .notes-manager > a {
+			background-image: url("/images/mbsadmin/notes_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+		.quickjump .global-support-tools .tree-tool > a {
+			background-image: url("/images/mbsadmin/tree_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+		.quickjump .global-support-tools .custom-pricing > a {
+			background-image: url("/images/mbsadmin/mbsadmin_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+	/* main gblsh menu */
+	.quickjump .special-handling > a {
+		background-image: url("/images/gblsh/gblsh_sm.gif");
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+		/* sub items to special-handling */
+		.quickjump .special-handling .global-special-handling > a {
+			background-image: url("/images/gblsh/gblsh_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+		.quickjump .special-handling .contract-management > a {
+			background-image: url("/images/gblsh/gblsh_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+	/* main mbspmnt menu */
+	.quickjump .mbs-payments > a {
+		background-image: url("/images/mbspmnt/mbspmnt_sm.gif");
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+		/* sub items to mbs-payments */
+		.quickjump .mbs-payments .payment-terminal > a {
+			background-image: url("/images/mbspmnt/mbspmnt_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+	/* main banko menu */
+	.quickjump .banko-admin > a {
+		background-image: url("/images/banko/banko_sm.gif");
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+		/* sub items to banko */
+		.quickjump .banko-admin .company-search > a {
+			background-image: url("/images/banko/company_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+	/* main global admin menu */
+	.quickjump .global-admin > a {
+		background-image: url("/images/globaladmin/globaladmin_sm.gif");
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+		/* sub items to global */
+		.quickjump .global-admin .company-search > a {
+			background-image: url("/images/globaladmin/company_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+	/* main dunning menu */
+	.quickjump .dunning > a {
+		background-image: url("/images/suds/suds_sm.gif");
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+		/* sub items to dunning */
+		.quickjump .dunning .company-search > a {
+			background-image: url("/images/suds/suds_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+	/* main accadmin menu */
+	.quickjump .accurint-admin > a {
+		background-image: url("/images/accadmin/accadmin_sm.gif");
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+		/* sub items to accurint */
+		.quickjump .accurint-admin .company-search > a {
+			background-image: url("/images/accadmin/company_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+        
+        .quickjump .accurint-admin .activate-company > a {
+			background-image: url("/images/silk/accept.png");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+        
+        .quickjump .accurint-admin .suspend-company > a {
+			background-image: url("/images/silk/delete.png");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+
+		/* main accadmin menu */
+		.quickjump .credit-request-approval > a {
+			background-image: url("/images/caps/caps_sm.gif");
+			background-position: left center;
+			background-repeat: no-repeat;
+		}
+			/* sub items to accurint */
+			.quickjump .credit-request-approval .search > a {
+				background-image: url("/images/caps/caps_sm.gif");
+				background-position: left center;
+				background-repeat: no-repeat;
+			}
+      /* main insadmin menu */      
+    .quickjump .insurance-admin > a {
+        background-image: url("/images/insadmin/insadmin-21x21.gif");
+        background-position: left center;
+        background-repeat: no-repeat;
+    }
+
+form .mbs-form-validation-invalid {
+	border: 1px solid #b00000;
+}
+
+button.ibuttn img {
+
+	width: 16px;
+	padding: 1px;
+	vertical-align: middle;
+	border: 0px none !important;
+	position: relative;
+	bottom: 1px;
+}
+
+button.ibuttn {
+	text-align: left;
+	text-transform: capitalize;
+	font-weight: normal;
+	height: 23px;
+	margin: 0px;
+	padding: 0px;
+}
+
+td button.ibuttn {
+	text-align: left;
+	text-transform: capitalize;
+	font-weight: normal;
+	height: 23px;
+}
+
+button.ibuttn span{
+	padding-left: 3px;
+}
+.product th {
+	font: 600 99% Arial,sans-serif;
+	padding-left: 3px;
+	text-align: left;
+}
+
+/* Search box top right of UI */
+#mbs-user-search-container {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+#mbs-user-search-container label {
+	display: block;
+	font-size: 11px;
+	font-weight: bold;
+	color: #990033;
+	text-indent: 4px;
+}
+
+#mbs-user-container {
+	background-color: #FFFFFF;
+	font-size: 95%;
+	margin-top: 5px;
+}
+
+#mbs-user-input {
+	width: 250px;
+	position: relative;
+	margin-left: 0px;
+	vertical-align: middle;
+	background: url(/images/silk/group.png) no-repeat scroll 1% 50% #FFFFFF;
+	border: 3px double #C2B2B5;
+	padding: 4px 4px 4px 25px;
+	color: #C2B2B5;
+}
+
+.freestanding-form {
+	background-color: #ECE8E8
+}
+
+/* YUI DataTable overrides */
+.yui-skin-sam tr.yui-dt-even {
+	background-color:#FFF;
+
+}
+.yui-skin-sam tr.yui-dt-odd {
+	background-color:#F2F2F2;
+
+}
+.yui-skin-sam tr.yui-dt-even td.yui-dt-asc,
+.yui-skin-sam tr.yui-dt-even td.yui-dt-desc {
+	background-color: #C3C8C8;
+
+}
+.yui-skin-sam tr.yui-dt-odd td.yui-dt-asc,
+.yui-skin-sam tr.yui-dt-odd td.yui-dt-desc {
+	background-color:#D4D6D9;
+
+}
+.yui-skin-sam .yui-dt-list tr.yui-dt-even {
+	background-color:#FFF;
+
+}
+.yui-skin-sam .yui-dt-list tr.yui-dt-odd {
+	background-color:#FFF;
+
+}
+.yui-skin-sam .yui-dt-list tr.yui-dt-even td.yui-dt-asc,
+.yui-skin-sam .yui-dt-list tr.yui-dt-even td.yui-dt-desc {
+	background-color:#EDF5FF;
+
+}
+.yui-skin-sam .yui-dt-list tr.yui-dt-odd td.yui-dt-asc,
+.yui-skin-sam .yui-dt-list tr.yui-dt-odd td.yui-dt-desc {
+	background-color:#EDF5FF;
+
+}
+.yui-skin-sam th.yui-dt-highlighted,
+.yui-skin-sam th.yui-dt-highlighted a {
+	background-color:#D3D3D3;
+
+}
+.yui-skin-sam tr.yui-dt-highlighted,
+.yui-skin-sam tr.yui-dt-highlighted td.yui-dt-asc,
+.yui-skin-sam tr.yui-dt-highlighted td.yui-dt-desc,
+.yui-skin-sam tr.yui-dt-even td.yui-dt-highlighted,
+.yui-skin-sam tr.yui-dt-odd td.yui-dt-highlighted {
+	background-color:#D3D3D3;
+
+}
+.yui-skin-sam .yui-dt-list th.yui-dt-highlighted,
+.yui-skin-sam .yui-dt-list th.yui-dt-highlighted a {
+	background-color:#D3D3D3;
+
+}
+.yui-skin-sam .yui-dt-list tr.yui-dt-highlighted,
+.yui-skin-sam .yui-dt-list tr.yui-dt-highlighted td.yui-dt-asc,
+.yui-skin-sam .yui-dt-list tr.yui-dt-highlighted td.yui-dt-desc,
+.yui-skin-sam .yui-dt-list tr.yui-dt-even td.yui-dt-highlighted,
+.yui-skin-sam .yui-dt-list tr.yui-dt-odd td.yui-dt-highlighted {
+	background-color:#D3D3D3;
+
+}
+.yui-skin-sam th.yui-dt-selected,
+.yui-skin-sam th.yui-dt-selected a {
+	background-color:#446CD7;
+
+}
+.yui-skin-sam tr.yui-dt-selected td,
+.yui-skin-sam tr.yui-dt-selected td.yui-dt-asc,
+.yui-skin-sam tr.yui-dt-selected td.yui-dt-desc {
+	background-color:#426FD9;
+	color:#FFF;
+
+}
+.yui-skin-sam tr.yui-dt-even td.yui-dt-selected,
+.yui-skin-sam tr.yui-dt-odd td.yui-dt-selected {
+	background-color:#446CD7;
+	color:#FFF;
+
+}
+.yui-skin-sam .yui-dt-list th.yui-dt-selected,
+.yui-skin-sam .yui-dt-list th.yui-dt-selected a {
+	background-color:#446CD7;
+
+}
+
+/* Row hover style */
+table.sortable  tbody tr td.currentCell,
+table.sortable  tbody tr td:hover,
+table.sortable  tbody tr.alt td:hover {
+	background-color:#D3D3D3;
+}
+
+table.sortable  tr.rowHover td,  /* Internet Explorer < 7 (and 7 in quirks mode)*/
+table.sortable tr:hover td {
+	background-color:#D3D3D3;
+}
+
+/* Alternate row hover styles */
+table.sortable tr.alt:hover td {
+	background-color:#D3D3D3;
+}
+
+table.sortable td[class~="alt"] {
+	background-color: #C3C8C8;
+}
+
+table.sortable tr[class~="alt"] td[class~="alt"] {
+	background-color: #D4D6D9;
+}
+
+/* fix hidden cell in datatable so the border doesn't show */
+th.yui-dt-hidden,td.yui-dt-hidden,
+tr.yui-dt-odd .yui-dt-hidden,
+tr.yui-dt-even .yui-dt-hidden {
+	display: none;
+}
+
+.yui-dt {
+	font-size: 11px;
+}
+
+/* stretch datatables */
+.yui-dt.full-width table {
+    width: 100%;
+}
+.js-data-table-simple{
+	font-family: Arial,sans-serif;
+    text-align: left;
+	font-size: 12px;
+	margin: 10px;	
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	-webkit-box-shadow: 2px 2px 3px #000000;
+	-moz-box-shadow: 2px 2px 3px #000000;
+	box-shadow: 2px 2px 3px #000000;
+	background-color: #DDDDDD;
+	padding: 0 10em;
+	font-family: "Trebuchet MS","Lucida Grande","Lucida Sans";
+}
+.js-data-table-simple td{
+	text-align: left;
+	padding: 6px;
+}
+
+.capitalize{
+	padding-right: 4px;
+	text-transform:capitalize;
+}
+.smallLoading {
+		line-height: 30px; /* 30 to clear the loading gif*/
+		text-indent: 30px;
+		background-image: url(/images/meal/loading.gif);
+		background-size:15px 15px;
+		padding:0 20px;
+		background-repeat: no-repeat;
+}
+.mainframe-reports{
+	font-family: monospace !important;	
+}
+.display-none{
+	display:none;
+}
+.global-item{
+	text-transform: capitalize;
+}
+.global-search-bold{
+	font-weight: bold;
+}
+.img-btn{
+    border:0 !important;
+}
+.img-btn:hover{
+    border:1px transparent solid !important;
+}
+.img-btn:active{
+    border:0 !important;
+}

@@ -1,0 +1,81 @@
+﻿  label
+        {
+            width: 200px;
+        }
+
+        table
+        {
+            background-color: white;
+        }
+
+        #btnSubmit
+        {
+            background-color: #515151;
+            color: #CC0033;
+            border: solid 1px #515151;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            height: 30px;
+            position: relative;
+            width: 100%;
+        }
+
+        label
+        {
+            background-color: #2d2d2d;
+            color: #EBB52D;
+        }
+
+        #lnHeader
+        {
+            background-color: #c8c8c8;
+        }
+
+        body
+        {
+            background-color: #F0F0F0;
+        }
+
+        td, div
+        {
+            text-align: center;
+        }
+
+        label
+        {
+            text-align: left;
+        }
+
+        .calendar1
+        {
+            background-color: white;
+            border: 2px hidden black;
+        }
+
+        .headingTag
+        {
+            font: bold 16px arial;
+            margin-bottom: 40px;
+            color: #CC0033;
+            font-style: italic;
+            vertical-align: 75%;
+        }
+
+        #divProgress
+        {
+            display: block;
+            height: 5px;
+            background-color: #efefef;
+            border-radius: 2px;
+        }
+
+        a, u
+        {
+            text-decoration: none;
+        }
+        div.disableControls
+        {
+            opacity:0.5;
+            position:relative;
+        }
