@@ -10,19 +10,180 @@ using System.Threading;
 using System.Configuration;
 using System.Data;
 using System.Reflection;
+using System.Text;
+using System.IO;
+using System.Collections.ObjectModel;
+using System.Collections;
 
 namespace ScoringApp1
 {
+
     public partial class ScoringForm : System.Web.UI.Page
     {
+        DataSet dsSelectedData;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                cdrPrevDate.VisibleDate = DateTime.Today;
+                cdrCurrentDate.VisibleDate = DateTime.Today;
+                FillDatesUsingData(DateTime.Today);
+
+                Dictionary<String, ArrayList> myCollection = new Dictionary<string, ArrayList>();
+
+            }
+            else
+            {
+                dsSelectedData = (DataSet)ViewState["selectedDataForMonth"];
+            }
+        }
+        
+        private void FillDatesUsingData(DateTime visibleDate)
+        {
+            ScoringDAL dbAccess = new ScoringDAL();
+            String selectedMonth = visibleDate.Month.ToString();
+            String selectedYear = visibleDate.Year.ToString();
+            dsSelectedData = dbAccess.GetDatesWithData(selectedMonth, selectedYear);
+            ViewState["selectedDataForMonth"] = dsSelectedData;
+        }
+
+
+
+        protected void cdrPrevDate_DayRender(object sender, DayRenderEventArgs e)
+        {
+            DateTime dateWithData;
+            String strDateWithData;
+            Boolean flagValue = false;
+            if (dsSelectedData != null)
+            {
+                foreach (DataRow dr in dsSelectedData.Tables[0].Rows)
+                {
+                    strDateWithData = dr["dateWithData"].ToString();
+
+                    dateWithData = new DateTime(Convert.ToInt32(strDateWithData.Substring(0, 4)),
+                                                Convert.ToInt32(strDateWithData.Substring(4, 2)),
+                                                Convert.ToInt32(strDateWithData.Substring(6, 2)));
+                    if (dateWithData == e.Day.Date)
+                    {
+                        e.Cell.BackColor = System.Drawing.Color.IndianRed;
+                        flagValue = true;
+                        break;
+                    }
+
+                }
+                if (!flagValue)
+                {
+                    e.Cell.BackColor = System.Drawing.Color.LightGray;
+                    e.Cell.Enabled = false;
+                    e.Cell.Controls.Clear();
+                    e.Cell.Controls.Add(new LiteralControl(e.Day.Date.Day.ToString()));
+                }
+
+            }
+            
+        }
+
+
+        protected void cdrPrevDate_SelectionChanged(object sender, EventArgs e)
+        {
+            DataSet dsTimeStamps;
+            ScoringDAL dbAccess = new ScoringDAL();
+            dsTimeStamps = dbAccess.GetReportGenerationTimes(cdrPrevDate.SelectedDate.ToString("yyyyMMdd"));
+            ddlPrevTime.Items.Clear();
+            if (dsTimeStamps != null)
+            {
+                foreach (DataRow drTimeStamp in dsTimeStamps.Tables[0].Rows)
+                {
+                    String strPrevTime = drTimeStamp["roxieTime"].ToString();
+                    DateTime prevTime = Convert.ToDateTime(strPrevTime.Substring(0, 2) + ":" + strPrevTime.Substring(2, 2) + ":" + strPrevTime.Substring(4, 2));
+                    ddlPrevTime.Items.Add(prevTime.ToString("hh:mm:ss tt"));
+                }
+            }
+           // RenderControl(cdrPrevDate);
+            //FillDatesUsingData(cdrPrevDate.SelectedDate);
 
         }
 
+        //public String RenderControl(Control ctrl)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    StringWriter sw = new StringWriter(sb);
+        //    HtmlTextWriter hw = new HtmlTextWriter(sw);
+
+        //    ctrl.RenderControl(hw);
+        //    return sb.ToString();
+        //}
+
+        protected void cdrPrevDate_VisibleMonthChanged(object sender, MonthChangedEventArgs e)
+        {
+            cdrPrevDate.VisibleDate = e.NewDate;
+            FillDatesUsingData(e.NewDate);
+        }
+
+
+
+        protected void cdrCurrentDate_SelectionChanged(object sender, EventArgs e)
+        {
+
+            DataSet dsTimeStamps;
+            ScoringDAL dbAccess = new ScoringDAL();
+            dsTimeStamps = dbAccess.GetReportGenerationTimes(cdrCurrentDate.SelectedDate.ToString("yyyyMMdd"));
+            ddlCurrentTime.Items.Clear();
+            if (dsTimeStamps != null)
+            {
+                foreach (DataRow drTimeStamp in dsTimeStamps.Tables[0].Rows)
+                {
+                    String strPrevTime = drTimeStamp["roxieTime"].ToString();
+                    DateTime prevTime = Convert.ToDateTime(strPrevTime.Substring(0, 2) + ":" + strPrevTime.Substring(2, 2) + ":" + strPrevTime.Substring(4, 2));
+                    ddlCurrentTime.Items.Add(prevTime.ToString("hh:mm:ss tt"));
+                }
+            }
+
+        }
+
+        protected void cdrCurrentDate_DayRender(object sender, DayRenderEventArgs e)
+        {
+            DateTime dateWithData;
+            String strDateWithData;
+            Boolean flagValue = false;
+            if (dsSelectedData != null)
+            {
+                foreach (DataRow dr in dsSelectedData.Tables[0].Rows)
+                {
+                    strDateWithData = dr["dateWithData"].ToString();
+
+                    dateWithData = new DateTime(Convert.ToInt32(strDateWithData.Substring(0, 4)),
+                                                Convert.ToInt32(strDateWithData.Substring(4, 2)),
+                                                Convert.ToInt32(strDateWithData.Substring(6, 2)));
+                    if (dateWithData == e.Day.Date)
+                    {
+                        e.Cell.BackColor = System.Drawing.Color.IndianRed;
+                        flagValue = true;
+                        break;
+                    }
+
+                }
+                if (!flagValue)
+                {
+                    e.Cell.BackColor = System.Drawing.Color.LightGray;
+                    e.Cell.Enabled = false;
+                    e.Cell.Controls.Clear();
+                    e.Cell.Controls.Add(new LiteralControl(e.Day.Date.Day.ToString()));
+                }
+
+            }
+        }
+
+        protected void cdrCurrentDate_VisibleMonthChanged(object sender, MonthChangedEventArgs e)
+        {
+            cdrCurrentDate.VisibleDate = e.NewDate;
+            FillDatesUsingData(e.NewDate);
+        }
+
+
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            
+
             String modelValue;
             String previousDate;
             String currentDate;
@@ -31,9 +192,9 @@ namespace ScoringApp1
             previousDate = (hifPrevDate.Value == "") ? "20130210" : hifPrevDate.Value;
             currentDate = (hifCurrentDate.Value == "") ? "20130522" : hifCurrentDate.Value;
             previousDate = cdrPrevDate.SelectedDate.ToString("yyyyMMdd");
-            
+
             currentDate = cdrCurrentDate.SelectedDate.ToString("yyyyMMdd");
-            
+
 
             modelValue = (hifModel.Value == "") ? "Risk View" : hifModel.Value;
 
@@ -42,62 +203,9 @@ namespace ScoringApp1
 
             tableType = "rvscores";
 
-
-            ConnectionStringSettings cs;
-            cs = ConfigurationManager.ConnectionStrings["DQConnectionString"];
-            String connString = cs.ConnectionString;
-            SqlConnection dbConnection = new SqlConnection(connString);
-            String sqlScoresCompare;
-            sqlScoresCompare = "SCORES_COMPARE_SCRIPT";
-
-            SqlCommand dbCommand = new SqlCommand(sqlScoresCompare, dbConnection);
-            dbCommand.CommandType = CommandType.StoredProcedure;
-
-            dbCommand.Parameters.Add(new SqlParameter("@previous", previousDate));
-            dbCommand.Parameters.Add(new SqlParameter("@current", currentDate));
-            dbCommand.Parameters.Add(new SqlParameter("@model", tableType));
-
-            dbConnection.Open();
-            try
-            {
-                dbCommand.ExecuteNonQuery();
-            }
-            catch (SqlException)
-            {
-                Console.WriteLine("SQL Exception occured in submit button click event");
-            }
-            finally
-            {
-
-                dbConnection.Close();
-
-                //updating the excel document
-                Excel.Application excelApp = new Excel.Application();
-                excelApp.Visible = false;
-                string workbookPath = "C:\\Users\\parevi01\\Documents\\LexisNexis\\Compare_Reports_v03.xlsx";
-
-                string physicalPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath;
-                //workbookPath = physicalPath + "Compare_Reports_v03.xlsx";
-
-
-                Excel.Workbook sampleWorkBook = excelApp.Workbooks.Open(workbookPath, Missing.Value, false, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value, true);
-
-                sampleWorkBook.RefreshAll();
-
-                System.Threading.Thread.Sleep(10000);
-                sampleWorkBook.Save();
-                System.Threading.Thread.Sleep(2000);
-                excelApp.Workbooks.Close();
-                excelApp.Quit();
-
-
-                excelApp = new Excel.Application();
-                excelApp.Visible = true;
-
-                sampleWorkBook = excelApp.Workbooks.Open(workbookPath);
-
-            }
-
+            ScoringDAL dbAccess = new ScoringDAL();
+            dbAccess.RefreshData(previousDate, currentDate, tableType);
+            dbAccess.GenerateExcel();
 
         }
 
@@ -111,43 +219,7 @@ namespace ScoringApp1
             return "Loading finished";
         }
 
-        protected void cdrPrevDate_SelectionChanged(object sender, EventArgs e)
-        {
-            
-            String sqlGetTimeStamp= "";
-            String previousDate = "";
-            ConnectionStringSettings cs;
-            
-            sqlGetTimeStamp = "select distinct SUBSTRING(roxie_date,(LEN(roxie_date) - 5),6) as prevTime" + 
-                " FROM [DQ].[dbo].[scr_master_runs] where SUBSTRING(roxie_date,1,8) = @prevDate";
-            previousDate = cdrPrevDate.SelectedDate.ToString("yyyyMMdd");
-            cs = ConfigurationManager.ConnectionStrings["DQConnectionString"];
-            
-            String connString = cs.ConnectionString;
-            SqlConnection dbConnection = new SqlConnection(connString);
-            SqlDataReader drTimeStamps;
 
-            SqlCommand dbCommand = new SqlCommand(sqlGetTimeStamp, dbConnection);
-            dbCommand.CommandType = CommandType.Text;
-            dbCommand.Parameters.Add(new SqlParameter("@prevDate", previousDate));
-            
-            dbConnection.Open();
-            try
-            {
-                drTimeStamps = dbCommand.ExecuteReader();
-                while (drTimeStamps.Read())
-                {
-                    ddlPrevTime.Items.Add(drTimeStamps["prevTime"].ToString());
-                }
-            }
-            catch (SqlException)
-            {
-                Console.WriteLine("SQL Exception occured in submit button click event");
-            }
-            finally
-            {
-                dbConnection.Close();
-            }
-        }
+
     }
 }

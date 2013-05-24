@@ -22,6 +22,15 @@ namespace ScoringApp1 {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// smUpdateDates control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager smUpdateDates;
+        
+        /// <summary>
         /// lblPrevDate control.
         /// </summary>
         /// <remarks>
@@ -29,6 +38,15 @@ namespace ScoringApp1 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPrevDate;
+        
+        /// <summary>
+        /// UpdatePanel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
         /// cdrPrevDate control.
@@ -49,6 +67,15 @@ namespace ScoringApp1 {
         protected global::System.Web.UI.WebControls.Label lblCurrentDate;
         
         /// <summary>
+        /// upCdrPrevDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upCdrPrevDate;
+        
+        /// <summary>
         /// cdrCurrentDate control.
         /// </summary>
         /// <remarks>
@@ -58,6 +85,15 @@ namespace ScoringApp1 {
         protected global::System.Web.UI.WebControls.Calendar cdrCurrentDate;
         
         /// <summary>
+        /// getPrevTimes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel getPrevTimes;
+        
+        /// <summary>
         /// ddlPrevTime control.
         /// </summary>
         /// <remarks>
@@ -65,6 +101,15 @@ namespace ScoringApp1 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlPrevTime;
+        
+        /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
         /// ddlCurrentTime control.

@@ -24,7 +24,7 @@
     <script type="text/javascript">
 
         $(function () {
-           
+
             $("#btnSubmit").button();
             //$("#progressbar").progressbar({ value: false });
 
@@ -111,6 +111,10 @@
                 }
             }
 
+            $("#ddlPrevTime").change(function () {
+                $("#ddlPrevTime").selectbox();
+            });
+
         });
 
     </script>
@@ -119,6 +123,7 @@
 </head>
 <body>
     <form id="form1" runat="server" style="margin: 10% auto; width: 70%;">
+        <asp:ScriptManager runat="server" ID="smUpdateDates" EnablePartialRendering="true"></asp:ScriptManager>
         <div id="lnHeader" style="text-align: left; width: 100%; border-radius: 10px 0px 10px 0px">
             <img src="img/lexislogo.gif" alt="LexisNexis" style="text-align: left" />
             <span class="headingTag">Scoring Regression</span>
@@ -128,18 +133,27 @@
             <table>
                 <tr>
                     <td style="width: 33%; padding: 10px 10px 10px 10px;">
-                        <div class="disableControls">
+                        <div class="disableControls1">
                             <asp:Label ID="lblPrevDate" runat="server" Text="Previous Date"></asp:Label>
-                            <asp:Calendar Enabled="false" BorderWidth="1px" DayNameFormat="FirstTwoLetters"
-                                Font-Names="Meiryo UI" Font-Size="16px" CssClass="calendar1" ID="cdrPrevDate" Visible="true"
-                                runat="server" CellSpacing="1" ForeColor="#172013" OnSelectionChanged="cdrPrevDate_SelectionChanged" Width="250px">
-                                <SelectedDayStyle BackColor="#FF6666" />
-                                <SelectorStyle BackColor="#FF6666" ForeColor="White" />
-                                <DayHeaderStyle BackColor="#d8c1c0" ForeColor="#CC0033" Font-Bold="false" Font-Size="Smaller" />
-                                <DayStyle BackColor="#ffffff" BorderColor="#FFFFCC" BorderWidth="1px" Font-Italic="False"
-                                    Font-Names="Meiryo UI" Font-Size="Smaller" HorizontalAlign="Justify" Wrap="False" />
-                                <WeekendDayStyle BackColor="#cccccc" ForeColor="#999999" />
-                            </asp:Calendar>
+                            <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>
+                                    <asp:Calendar BorderWidth="1px" DayNameFormat="FirstTwoLetters"
+                                        Font-Names="Meiryo UI" Font-Size="16px" CssClass="calendar1" ID="cdrPrevDate" Visible="true"
+                                        runat="server" CellSpacing="1" ForeColor="#172013" OnSelectionChanged="cdrPrevDate_SelectionChanged"
+                                        Width="250px" OnDayRender="cdrPrevDate_DayRender" OnVisibleMonthChanged="cdrPrevDate_VisibleMonthChanged">
+                                        <SelectedDayStyle BackColor="#FF6666" />
+                                        <SelectorStyle BackColor="#FF6666" ForeColor="White" />
+                                        <DayHeaderStyle BackColor="#d8c1c0" ForeColor="#CC0033" Font-Bold="false" Font-Size="Smaller" />
+                                        <DayStyle BackColor="#ffffff" BorderColor="#FFFFCC" BorderWidth="1px" Font-Italic="False"
+                                            Font-Names="Meiryo UI" Font-Size="Smaller" HorizontalAlign="Justify" Wrap="False" />
+                                        <WeekendDayStyle BackColor="#cccccc" ForeColor="#999999" />
+                                    </asp:Calendar>
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="cdrPrevDate" />
+                                </Triggers>
+                            </asp:UpdatePanel>
+
                         </div>
 
                     </td>
@@ -180,32 +194,71 @@
                     </td>
                     <td style="width: 33%; padding: 10px 10px 10px 10px;">
                         <asp:Label ID="lblCurrentDate" runat="server" Text="Current Date"></asp:Label>
-                        <asp:Calendar BorderWidth="1px" DayNameFormat="FirstTwoLetters"
-                            Font-Names="Meiryo UI" Font-Size="16px" CssClass="calendar1" ID="cdrCurrentDate" Visible="true"
-                            runat="server" CellSpacing="1" ForeColor="#172013" OnSelectionChanged="cdrPrevDate_SelectionChanged" Width="250px">
-                            <SelectedDayStyle BackColor="#FF6666" />
-                            <SelectorStyle BackColor="#FF6666" ForeColor="White" />
-                            <DayHeaderStyle BackColor="#d8c1c0" ForeColor="#CC0033" Font-Bold="false" Font-Size="Smaller" />
-                            <DayStyle BackColor="#ffffff" BorderColor="#FFFFCC" BorderWidth="1px" Font-Italic="False"
-                                Font-Names="Meiryo UI" Font-Size="Smaller" HorizontalAlign="Justify" Wrap="False" />
-                            <WeekendDayStyle BackColor="#cccccc" ForeColor="#999999" />
-                        </asp:Calendar>
+                        <asp:UpdatePanel ID="upCdrPrevDate" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <asp:Calendar BorderWidth="1px" DayNameFormat="FirstTwoLetters"
+                                    Font-Names="Meiryo UI" Font-Size="16px" CssClass="calendar1" ID="cdrCurrentDate" Visible="true"
+                                    runat="server" CellSpacing="1" ForeColor="#172013" OnSelectionChanged="cdrCurrentDate_SelectionChanged" Width="250px" OnDayRender="cdrCurrentDate_DayRender" OnVisibleMonthChanged="cdrCurrentDate_VisibleMonthChanged">
+                                    <SelectedDayStyle BackColor="#FF6666" />
+                                    <SelectorStyle BackColor="#FF6666" ForeColor="White" />
+                                    <DayHeaderStyle BackColor="#d8c1c0" ForeColor="#CC0033" Font-Bold="false" Font-Size="Smaller" />
+                                    <DayStyle BackColor="#ffffff" BorderColor="#FFFFCC" BorderWidth="1px" Font-Italic="False"
+                                        Font-Names="Meiryo UI" Font-Size="Smaller" HorizontalAlign="Justify" Wrap="False" />
+                                    <WeekendDayStyle BackColor="#cccccc" ForeColor="#999999" />
+                                </asp:Calendar>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="cdrCurrentDate" />
+                            </Triggers>
+                        </asp:UpdatePanel>
                     </td>
                 </tr>
                 <tr>
                     <td style="width: 33%; padding: 10px 10px 10px 10px;">
-                        <asp:DropDownList ID="ddlPrevTime" runat="server" AppendDataBoundItems="true" DataTextField="PreviousTime" DataValueField="prevTime">
-                            <asp:ListItem Enabled="false" Selected="True" Text="Current Time" Value=""></asp:ListItem>
-                        </asp:DropDownList>
+                        <asp:UpdatePanel ID="getPrevTimes" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <asp:DropDownList ID="ddlPrevTime" runat="server"
+                                    AppendDataBoundItems="true" DataTextField="PreviousTime"
+                                    DataValueField="prevTime">
+                                    <asp:ListItem Enabled="false" Selected="True" Text="Previous Time" Value=""></asp:ListItem>
+                                </asp:DropDownList>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="cdrPrevDate" EventName="SelectionChanged" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                        <script type="text/javascript" lang="javascript">
+                            var prm = Sys.WebForms.PageRequestManager.getInstance();
+                            prm.add_pageLoaded(PageLoadedEventHandler);
+                            function PageLoadedEventHandler() {
+                                $("#ddlPrevTime").selectbox();
+                            }
+                        </script>
                     </td>
                     <td style="width: 34%; padding: 10px 10px 10px 10px;">
                         <div id="progressbar">
                         </div>
                     </td>
                     <td style="width: 33%; padding: 10px 10px 10px 10px;">
-                        <asp:DropDownList ID="ddlCurrentTime" runat="server" Width="2px">
-                            <asp:ListItem Enabled="false" Selected="True" Text="Current Time" Value=""></asp:ListItem>
-                        </asp:DropDownList>
+                        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <asp:DropDownList ID="ddlCurrentTime" runat="server"
+                                    AppendDataBoundItems="true" DataTextField="CurrentTime"
+                                    DataValueField="currentTime">
+                                    <asp:ListItem Enabled="false" Selected="True" Text="Current Time" Value=""></asp:ListItem>
+                                </asp:DropDownList>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="cdrCurrentDate" EventName="SelectionChanged" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                        <script type="text/javascript" lang="javascript">
+                            var prm = Sys.WebForms.PageRequestManager.getInstance();
+                            prm.add_pageLoaded(PageLoadedEventHandler);
+                            function PageLoadedEventHandler() {
+                                $("#ddlCurrentTime").selectbox();
+                            }
+                        </script>
                     </td>
                 </tr>
                 <tr>
