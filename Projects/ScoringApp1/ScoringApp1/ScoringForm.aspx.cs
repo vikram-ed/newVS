@@ -14,6 +14,8 @@ using System.Text;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Collections;
+using System.Threading.Tasks;
+using System.Web.SessionState;
 
 namespace ScoringApp1
 {
@@ -21,6 +23,7 @@ namespace ScoringApp1
     public partial class ScoringForm : System.Web.UI.Page
     {
         DataSet dsSelectedData;
+        public static String progress;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -28,8 +31,12 @@ namespace ScoringApp1
                 cdrPrevDate.VisibleDate = DateTime.Today;
                 cdrCurrentDate.VisibleDate = DateTime.Today;
                 FillDatesUsingData(DateTime.Today);
-
+                ddlPrevTime.Enabled = false;
                 Dictionary<String, ArrayList> myCollection = new Dictionary<string, ArrayList>();
+                ScoringDAL dbAccess = new ScoringDAL();
+                myCollection = dbAccess.GetDefaultLists("Risk View");
+                ViewState["listsDictionary"] = myCollection;
+                Page.ClientScript.RegisterHiddenField("vCode", ViewState["listsDictionary"].ToString());
 
             }
             else
@@ -37,7 +44,11 @@ namespace ScoringApp1
                 dsSelectedData = (DataSet)ViewState["selectedDataForMonth"];
             }
         }
-        
+
+
+        /// <summary>
+        /// Get dates with data and fill the global dataset with it
+        /// </summary>
         private void FillDatesUsingData(DateTime visibleDate)
         {
             ScoringDAL dbAccess = new ScoringDAL();
@@ -47,14 +58,13 @@ namespace ScoringApp1
             ViewState["selectedDataForMonth"] = dsSelectedData;
         }
 
-
-
+        #region "PrevDate calendar events"
         protected void cdrPrevDate_DayRender(object sender, DayRenderEventArgs e)
         {
             DateTime dateWithData;
             String strDateWithData;
             Boolean flagValue = false;
-            if (dsSelectedData != null)
+            if (dsSelectedData != null && dsSelectedData.Tables.Count != 0)
             {
                 foreach (DataRow dr in dsSelectedData.Tables[0].Rows)
                 {
@@ -80,7 +90,7 @@ namespace ScoringApp1
                 }
 
             }
-            
+
         }
 
 
@@ -95,11 +105,17 @@ namespace ScoringApp1
                 foreach (DataRow drTimeStamp in dsTimeStamps.Tables[0].Rows)
                 {
                     String strPrevTime = drTimeStamp["roxieTime"].ToString();
-                    DateTime prevTime = Convert.ToDateTime(strPrevTime.Substring(0, 2) + ":" + strPrevTime.Substring(2, 2) + ":" + strPrevTime.Substring(4, 2));
-                    ddlPrevTime.Items.Add(prevTime.ToString("hh:mm:ss tt"));
+                    TimeSpan ts = new TimeSpan(Convert.ToInt32(strPrevTime.Substring(0, 2)),
+                                               Convert.ToInt32(strPrevTime.Substring(2, 2)),
+                                               Convert.ToInt32(strPrevTime.Substring(4, 2)));
+                    DateTime prevTime = cdrPrevDate.SelectedDate + ts;
+                    //DateTime prevTime = Convert.ToDateTime(strPrevTime.Substring(0, 2) + ":" + strPrevTime.Substring(2, 2) + ":" + strPrevTime.Substring(4, 2));
+                    ddlPrevTime.Items.Add("Previous Time");
+                    ddlPrevTime.Items.Add(prevTime.ToString("MM/dd/yyyy hh:mm:ss tt"));
+                    ddlPrevTime.Enabled = true;
                 }
             }
-           // RenderControl(cdrPrevDate);
+            // RenderControl(cdrPrevDate);
             //FillDatesUsingData(cdrPrevDate.SelectedDate);
 
         }
@@ -120,8 +136,8 @@ namespace ScoringApp1
             FillDatesUsingData(e.NewDate);
         }
 
-
-
+        #endregion
+        #region "CurrentDate calendar events"
         protected void cdrCurrentDate_SelectionChanged(object sender, EventArgs e)
         {
 
@@ -135,7 +151,9 @@ namespace ScoringApp1
                 {
                     String strPrevTime = drTimeStamp["roxieTime"].ToString();
                     DateTime prevTime = Convert.ToDateTime(strPrevTime.Substring(0, 2) + ":" + strPrevTime.Substring(2, 2) + ":" + strPrevTime.Substring(4, 2));
+                    ddlCurrentTime.Items.Add("Current Time");
                     ddlCurrentTime.Items.Add(prevTime.ToString("hh:mm:ss tt"));
+                    ddlCurrentTime.Enabled = true;
                 }
             }
 
@@ -179,7 +197,47 @@ namespace ScoringApp1
             cdrCurrentDate.VisibleDate = e.NewDate;
             FillDatesUsingData(e.NewDate);
         }
+        #endregion
 
+        /// <summary>
+        /// PageMethod for triggering long running operation
+        /// </summary>
+        /// <returns></returns>
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static object Operation()
+        {
+            HttpSessionState session = HttpContext.Current.Session;
+
+            //Separate thread for long running operation
+            ThreadPool.QueueUserWorkItem(delegate
+            {
+
+                int operationProgress;
+
+                for (operationProgress = 0; operationProgress <= 100; operationProgress = operationProgress + 2)
+                {
+                    session["OPERATION_PROGRESS"] = operationProgress;
+                    Thread.Sleep(1000);
+                }
+            });
+
+            return new { progress = 0 };
+        }
+
+        /// <summary>
+        /// PageMethod for reporting progress
+        /// </summary>
+        /// <returns></returns>
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static object OperationProgress()
+        {
+            int operationProgress = 0;
+
+            if (HttpContext.Current.Session["OPERATION_PROGRESS"] != null)
+                operationProgress = (int)HttpContext.Current.Session["OPERATION_PROGRESS"];
+
+            return new { progress = operationProgress };
+        }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
@@ -188,6 +246,11 @@ namespace ScoringApp1
             String previousDate;
             String currentDate;
 
+            progress = "Retrieving values...";
+
+            btnSubmit.Enabled = false;
+
+            Console.WriteLine(hifEnv.Value);
             //Assigning default values for the variables
             previousDate = (hifPrevDate.Value == "") ? "20130210" : hifPrevDate.Value;
             currentDate = (hifCurrentDate.Value == "") ? "20130522" : hifCurrentDate.Value;
@@ -202,21 +265,34 @@ namespace ScoringApp1
             String tableType = "";
 
             tableType = "rvscores";
-
             ScoringDAL dbAccess = new ScoringDAL();
+            progress = "Running queries to generate data...";
             dbAccess.RefreshData(previousDate, currentDate, tableType);
+            //RefreshDataAsync(previousDate, currentDate, tableType);
+            progress = "Generating Excel...";
             dbAccess.GenerateExcel();
 
+            Thread.Sleep(1000);
+            progress = "Excel Generated";
+
+
+        }
+
+        private async void RefreshDataAsync(String previousDate, String currentDate, String tableType)
+        {
+            ScoringDAL dbAccess = new ScoringDAL();
+            //dbAccess.RefreshData(previousDate, currentDate, tableType);
+            await dbAccess.RefreshDataAsync(previousDate, currentDate, tableType);
         }
 
         [System.Web.Services.WebMethod]
         public static string GetText()
         {
-            for (int loopIndex = 0; loopIndex < 10; loopIndex++)
-            {
-                Thread.Sleep(1000);
-            }
-            return "Loading finished";
+            //for (int loopIndex = 0; loopIndex < 10; loopIndex++)
+            //{
+            //    Thread.Sleep(1000);
+            //}
+            return progress;
         }
 
 

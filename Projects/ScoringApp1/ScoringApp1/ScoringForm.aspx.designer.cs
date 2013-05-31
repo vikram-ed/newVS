@@ -31,6 +31,24 @@ namespace ScoringApp1 {
         protected global::System.Web.UI.ScriptManager smUpdateDates;
         
         /// <summary>
+        /// updProgress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updProgress;
+        
+        /// <summary>
+        /// lblUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUpdate;
+        
+        /// <summary>
         /// lblPrevDate control.
         /// </summary>
         /// <remarks>
@@ -121,6 +139,15 @@ namespace ScoringApp1 {
         protected global::System.Web.UI.WebControls.DropDownList ddlCurrentTime;
         
         /// <summary>
+        /// btnGather control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGather;
+        
+        /// <summary>
         /// btnSubmit control.
         /// </summary>
         /// <remarks>
@@ -128,6 +155,15 @@ namespace ScoringApp1 {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
+        
+        /// <summary>
+        /// btnReset control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnReset;
         
         /// <summary>
         /// hifModel control.

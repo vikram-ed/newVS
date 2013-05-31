@@ -1,18 +1,83 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.ComponentModel;
 
 namespace ScoringApp1
 {
     public class ScoringDAL
     {
+        /// <summary>
+        /// Gets all the default values for the rvscores model
+        /// </summary>
+        /// <returns></returns>
+        [Description("Gets all the default values for the model specified")]
+        public Dictionary<String, ArrayList> GetDefaultLists(String model)
+        {
+            Dictionary<String, ArrayList> rvLists = new Dictionary<string, ArrayList>();
+            DataSet dsDates = new DataSet();
+            
+            ArrayList alVersion = new ArrayList();
+            ArrayList alMode = new ArrayList();
+            ArrayList alEnv = new ArrayList();
+            ArrayList alRestriction = new ArrayList();
+            ArrayList alCustomer = new ArrayList();
+          
+            ConnectionStringSettings cs;
+            cs = ConfigurationManager.ConnectionStrings["DQConnectionString"];
+            String connString = cs.ConnectionString;
+            SqlConnection dbConnection = new SqlConnection(connString);
+            String sqlScoresCompare;
+            sqlScoresCompare = "  select distinct version,mode,environment,fcra_nonfcra," +
+                                "customer from scr_master_runs where product= @model ";
 
+            SqlCommand dbCommand = new SqlCommand(sqlScoresCompare, dbConnection);
+            dbCommand.Parameters.AddWithValue("@model", model);
+            SqlDataAdapter daSelectedDates = new SqlDataAdapter(dbCommand);
+            dbConnection.Open();
+            try
+            {
+                daSelectedDates.Fill(dsDates);
+                foreach (DataRow row1 in dsDates.Tables[0].Rows)
+                {
+                    alVersion.Add(row1["version"].ToString());
+                    alMode.Add(row1["mode"].ToString());
+                    alMode.Add(row1["environment"].ToString());
+                    alRestriction.Add(row1["fcra_nonfcra"].ToString());
+                    alMode.Add(row1["customer"].ToString());  
+                }
+                rvLists.Add("Version", alVersion);
+                rvLists.Add("Mode", alMode);
+                rvLists.Add("Environment", alEnv);
+                rvLists.Add("Restriction", alRestriction);
+                rvLists.Add("Customer", alCustomer);
+            }
+            catch (SqlException)
+            {
+                Console.WriteLine("SQL Exception occured in submit button click event");
+                throw;
+            }
+            finally
+            {
+
+                dbConnection.Close();
+                
+            }
+            return rvLists;
+        }
+
+        /// <summary>
+        /// Gets dates for which the data is present in the database
+        /// </summary>
+        [Description("Gets dates for which the data is present in the database")]
         public DataSet GetDatesWithData(String selectedMonth, String selectedYear)
         {
             DataSet dsDates = new DataSet();
@@ -39,6 +104,7 @@ namespace ScoringApp1
             catch (SqlException)
             {
                 Console.WriteLine("SQL Exception occured in submit button click event");
+                throw;
             }
             finally
             {
@@ -46,6 +112,35 @@ namespace ScoringApp1
                 dbConnection.Close();
             }
             return dsDates;
+        }
+
+        public async Task RefreshDataAsync(String previousDate, String currentDate, String tableType)
+        {
+            ConnectionStringSettings cs;
+            cs = ConfigurationManager.ConnectionStrings["DQConnectionString"];
+            String connString = cs.ConnectionString;
+            String sqlScoresCompare;
+            sqlScoresCompare = "SCORES_COMPARE_SCRIPT";
+            using (SqlConnection dbConnection = new SqlConnection(connString))
+            using (SqlCommand dbCommand = new SqlCommand(sqlScoresCompare, dbConnection))
+            {
+                try
+                {
+                    dbCommand.CommandType = CommandType.StoredProcedure;
+                    dbCommand.Parameters.Add(new SqlParameter("@previous", previousDate));
+                    dbCommand.Parameters.Add(new SqlParameter("@current", currentDate));
+                    dbCommand.Parameters.Add(new SqlParameter("@model", tableType));
+
+                    await dbConnection.OpenAsync();
+
+                    await dbCommand.ExecuteNonQueryAsync();
+                    dbConnection.Close();
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception here.
+                }
+            }
         }
 
         public void RefreshData(String previousDate, String currentDate, String tableType)
@@ -59,7 +154,7 @@ namespace ScoringApp1
 
             SqlCommand dbCommand = new SqlCommand(sqlScoresCompare, dbConnection);
             dbCommand.CommandType = CommandType.StoredProcedure;
-
+            dbCommand.CommandTimeout = 180;
             dbCommand.Parameters.Add(new SqlParameter("@previous", previousDate));
             dbCommand.Parameters.Add(new SqlParameter("@current", currentDate));
             dbCommand.Parameters.Add(new SqlParameter("@model", tableType));
@@ -72,6 +167,7 @@ namespace ScoringApp1
             catch (SqlException)
             {
                 Console.WriteLine("SQL Exception occured in submit button click event");
+                throw;
             }
             finally
             {
@@ -85,7 +181,7 @@ namespace ScoringApp1
 
             //updating the excel document
             Excel.Application excelApp = new Excel.Application();
-            excelApp.Visible = false;
+            excelApp.Visible = true;
             string workbookPath = "C:\\Users\\parevi01\\Documents\\LexisNexis\\Compare_Reports_v03.xlsx";
 
             string physicalPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath;
@@ -96,19 +192,21 @@ namespace ScoringApp1
                                                                     Missing.Value, Missing.Value, Missing.Value, 
                                                                     Missing.Value, Missing.Value, Missing.Value, true);
 
+            
+            
             sampleWorkBook.RefreshAll();
 
-            System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(20000);
             sampleWorkBook.Save();
-            System.Threading.Thread.Sleep(2000);
-            excelApp.Workbooks.Close();
-            excelApp.Quit();
+            System.Threading.Thread.Sleep(20000);
+            //excelApp.Workbooks.Close();
+            //excelApp.Quit();
 
 
-            excelApp = new Excel.Application();
-            excelApp.Visible = true;
+            //excelApp = new Excel.Application();
+            //excelApp.Visible = true;
 
-            sampleWorkBook = excelApp.Workbooks.Open(workbookPath);
+            //sampleWorkBook = excelApp.Workbooks.Open(workbookPath);
         }
 
 

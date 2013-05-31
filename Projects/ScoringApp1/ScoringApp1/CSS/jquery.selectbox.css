@@ -2,9 +2,10 @@
 .sbHolder{
 	background-color: white;
 	border: solid 1px #515151;
+    border-radius:5px;
 	font-family: Arial, sans-serif;
 	font-size: 12px;
-	font-weight: normal;
+	font-weight: bold;
 	height: 30px;
 	position: relative;
 	width: 250px;

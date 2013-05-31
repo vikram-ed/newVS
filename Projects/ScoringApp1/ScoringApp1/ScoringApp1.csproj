@@ -65,7 +65,10 @@
     <Content Include="CSS\jquery.selectbox.css" />
     <Content Include="CSS\jquery.ui.progressbar.css" />
     <Content Include="CSS\ScoringFormStyle.css" />
+    <Content Include="img\loader-waiting.gif" />
+    <Content Include="img\comparisionChart.jpg" />
     <Content Include="img\lexislogo.gif" />
+    <Content Include="img\select-icons.png" />
     <Content Include="ScoringForm.aspx" />
     <Content Include="Scripts\glDatePicker.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
@@ -73,7 +76,10 @@
     <Content Include="Scripts\jquery.selectbox-0.2.js" />
     <Content Include="Scripts\jquery.ui.progressbar.js" />
     <Content Include="Scripts\progressbutton.jquery.js" />
-    <Content Include="Web.config" />
+    <Content Include="Scripts\ScoringFormScripts.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,9 +111,9 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>58070</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:49359/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
