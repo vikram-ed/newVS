@@ -16,20 +16,26 @@ using System.Collections.ObjectModel;
 using System.Collections;
 using System.Threading.Tasks;
 using System.Web.SessionState;
+using System.Diagnostics;
 
 namespace ScoringApp1
 {
 
     public partial class ScoringForm : System.Web.UI.Page
     {
-        DataSet dsSelectedData;
+        DataSet dsPrevDateSelectedData, dsCurrentDateSelectedData;
+
         public static String progress;
+        /// <summary>
+        /// Page load event handler
+        /// </summary>
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 cdrPrevDate.VisibleDate = DateTime.Today;
-                cdrCurrentDate.VisibleDate = DateTime.Today;
+                //cdrCurrentDate.VisibleDate = DateTime.Today;
+                cdrCurrentDate.Enabled = false;
                 FillDatesUsingData(DateTime.Today);
                 ddlPrevTime.Enabled = false;
                 Dictionary<String, ArrayList> myCollection = new Dictionary<string, ArrayList>();
@@ -41,7 +47,8 @@ namespace ScoringApp1
             }
             else
             {
-                dsSelectedData = (DataSet)ViewState["selectedDataForMonth"];
+                dsPrevDateSelectedData = (DataSet)ViewState["selectedPrevDateDataForMonth"];
+                dsCurrentDateSelectedData = (DataSet)ViewState["selectedCurrentDateDataForMonth"];
             }
         }
 
@@ -54,8 +61,9 @@ namespace ScoringApp1
             ScoringDAL dbAccess = new ScoringDAL();
             String selectedMonth = visibleDate.Month.ToString();
             String selectedYear = visibleDate.Year.ToString();
-            dsSelectedData = dbAccess.GetDatesWithData(selectedMonth, selectedYear);
-            ViewState["selectedDataForMonth"] = dsSelectedData;
+            dsPrevDateSelectedData = dbAccess.GetDatesWithData(selectedMonth, selectedYear);
+            ViewState["selectedPrevDateDataForMonth"] = dsPrevDateSelectedData;
+            
         }
 
         #region "PrevDate calendar events"
@@ -64,9 +72,9 @@ namespace ScoringApp1
             DateTime dateWithData;
             String strDateWithData;
             Boolean flagValue = false;
-            if (dsSelectedData != null && dsSelectedData.Tables.Count != 0)
+            if (dsPrevDateSelectedData != null && dsPrevDateSelectedData.Tables.Count != 0)
             {
-                foreach (DataRow dr in dsSelectedData.Tables[0].Rows)
+                foreach (DataRow dr in dsPrevDateSelectedData.Tables[0].Rows)
                 {
                     strDateWithData = dr["dateWithData"].ToString();
 
@@ -99,6 +107,13 @@ namespace ScoringApp1
             DataSet dsTimeStamps;
             ScoringDAL dbAccess = new ScoringDAL();
             dsTimeStamps = dbAccess.GetReportGenerationTimes(cdrPrevDate.SelectedDate.ToString("yyyyMMdd"));
+
+            cdrCurrentDate.Enabled = true;
+            cdrCurrentDate.VisibleDate = cdrPrevDate.SelectedDate;
+            dsCurrentDateSelectedData = dbAccess.GetCurrentDatesWithData(cdrPrevDate.SelectedDate.Month.ToString(), 
+                                                                        cdrPrevDate.SelectedDate.Year.ToString(), 
+                                                                        cdrPrevDate.SelectedDate.ToString("yyyyMMdd"));
+            ViewState["selectedCurrentDateDataForMonth"] = dsCurrentDateSelectedData;
             ddlPrevTime.Items.Clear();
             if (dsTimeStamps != null)
             {
@@ -142,6 +157,7 @@ namespace ScoringApp1
         {
 
             DataSet dsTimeStamps;
+            ArrayList alTimeStamps= new ArrayList();
             ScoringDAL dbAccess = new ScoringDAL();
             dsTimeStamps = dbAccess.GetReportGenerationTimes(cdrCurrentDate.SelectedDate.ToString("yyyyMMdd"));
             ddlCurrentTime.Items.Clear();
@@ -149,12 +165,20 @@ namespace ScoringApp1
             {
                 foreach (DataRow drTimeStamp in dsTimeStamps.Tables[0].Rows)
                 {
-                    String strPrevTime = drTimeStamp["roxieTime"].ToString();
-                    DateTime prevTime = Convert.ToDateTime(strPrevTime.Substring(0, 2) + ":" + strPrevTime.Substring(2, 2) + ":" + strPrevTime.Substring(4, 2));
+                    String strCurrentTime = drTimeStamp["roxieTime"].ToString();
+                    TimeSpan ts = new TimeSpan(Convert.ToInt32(strCurrentTime.Substring(0, 2)),
+                                               Convert.ToInt32(strCurrentTime.Substring(2, 2)),
+                                               Convert.ToInt32(strCurrentTime.Substring(4, 2)));
+                    DateTime prevTime = cdrCurrentDate.SelectedDate + ts;
+                    //DateTime prevTime = Convert.ToDateTime(strPrevTime.Substring(0, 2) + ":" + strPrevTime.Substring(2, 2) + ":" + strPrevTime.Substring(4, 2));
+                    //alTimeStamps.Add("Current Time");
+                    //alTimeStamps.Add(prevTime.ToString("MM/dd/yyyy hh:mm:ss tt"));
                     ddlCurrentTime.Items.Add("Current Time");
-                    ddlCurrentTime.Items.Add(prevTime.ToString("hh:mm:ss tt"));
+                    ddlCurrentTime.Items.Add(prevTime.ToString("MM/dd/yyyy hh:mm:ss tt"));
                     ddlCurrentTime.Enabled = true;
                 }
+                //ddlCurrentTime.DataSource = alTimeStamps;
+                //ddlCurrentTime.DataBind();
             }
 
         }
@@ -164,9 +188,9 @@ namespace ScoringApp1
             DateTime dateWithData;
             String strDateWithData;
             Boolean flagValue = false;
-            if (dsSelectedData != null)
+            if (dsCurrentDateSelectedData != null)
             {
-                foreach (DataRow dr in dsSelectedData.Tables[0].Rows)
+                foreach (DataRow dr in dsCurrentDateSelectedData.Tables[0].Rows)
                 {
                     strDateWithData = dr["dateWithData"].ToString();
 
@@ -239,10 +263,10 @@ namespace ScoringApp1
             return new { progress = operationProgress };
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        protected async void btnSubmit_Click(object sender, EventArgs e)
         {
 
-            String modelValue;
+            String modelValue, version, mode, env, restriction, customer;
             String previousDate;
             String currentDate;
 
@@ -250,7 +274,7 @@ namespace ScoringApp1
 
             btnSubmit.Enabled = false;
 
-            Console.WriteLine(hifEnv.Value);
+            Debug.WriteLine(hifEnv.Value);
             //Assigning default values for the variables
             previousDate = (hifPrevDate.Value == "") ? "20130210" : hifPrevDate.Value;
             currentDate = (hifCurrentDate.Value == "") ? "20130522" : hifCurrentDate.Value;
@@ -260,18 +284,24 @@ namespace ScoringApp1
 
 
             modelValue = (hifModel.Value == "") ? "Risk View" : hifModel.Value;
+            version = hifVersion.Value;
+            mode = hifMode.Value;
+            env = hifEnv.Value;
+            restriction = hifRestriction.Value;
+            customer = hifCustomer.Value;
 
-            //Appending type and model values to match the stored procedure requirements
-            String tableType = "";
-
-            tableType = "rvscores";
             ScoringDAL dbAccess = new ScoringDAL();
             progress = "Running queries to generate data...";
-            dbAccess.RefreshData(previousDate, currentDate, tableType);
+            dbAccess.RefreshData(previousDate, currentDate, modelValue, version, mode, env, restriction, customer, DateTime.Now.ToString());
             //RefreshDataAsync(previousDate, currentDate, tableType);
             progress = "Generating Excel...";
-            dbAccess.GenerateExcel();
+            Task generateExcelTask = ScoringDAL.GenerateExcel();
+            await Task.WhenAny(generateExcelTask);
+            //dbAccess.RefreshExcel();
 
+            //Task genExcelTask = ScoringDAL.GenerateExcelAsync();
+
+            //genExcelTask.Wait();
             Thread.Sleep(1000);
             progress = "Excel Generated";
 

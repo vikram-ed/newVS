@@ -58,13 +58,13 @@ namespace ScoringApp1 {
         protected global::System.Web.UI.WebControls.Label lblPrevDate;
         
         /// <summary>
-        /// UpdatePanel2 control.
+        /// updPrevDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
+        protected global::System.Web.UI.UpdatePanel updPrevDate;
         
         /// <summary>
         /// cdrPrevDate control.
@@ -85,13 +85,13 @@ namespace ScoringApp1 {
         protected global::System.Web.UI.WebControls.Label lblCurrentDate;
         
         /// <summary>
-        /// upCdrPrevDate control.
+        /// upCdrCurrentDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upCdrPrevDate;
+        protected global::System.Web.UI.UpdatePanel upCdrCurrentDate;
         
         /// <summary>
         /// cdrCurrentDate control.

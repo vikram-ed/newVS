@@ -38,7 +38,7 @@ $(function () {
 
             }
 
-            if (val == 'RiskView') {
+            if (val == 'Risk View') {
                 //$("#version_id").selectbox('detach');
                 //$("#version_id").val('4.0');
                 //$("#version_id").selectbox('attach');
@@ -48,7 +48,7 @@ $(function () {
                 $("#restriction_id").selectbox('change', 'FCRA', 'FCRA');
                 $("#customer_id").selectbox('change', 'Generic', 'Generic');
             }
-            else if (val == 'LeadIntegrity') {
+            else if (val == 'Lead Integrity') {
 
                 $("#version_id").selectbox('change', '4.0', '4.0');
                 $("#mode_id").selectbox('change', 'XML', 'XML');
@@ -71,7 +71,8 @@ $(function () {
     $("#btnSubmit").click(function () {
 
         // $("div#content").html('<div id="overlay"><img src="img/loader-waiting.gif" class="loading_circle" alt="loading" /></div>');
-        $("div#content").css("opacity", "0.2");
+        //$("div#content").css("opacity", "0.6");
+        $("div#content").animate({"opacity": "0.6"}, 2000);
         $("#divLoading").css("visibility", "visible");
         //$("#imgLoading").css("display", "block");
         //$("#imgLoading").animate({ "display": "block" }, 2000);
@@ -84,11 +85,11 @@ $(function () {
         var customerVal = $("#customer_id option:selected").val();
         
         $("#hifModel").val(modelVal);
-        $("#hifVersion").val(modelVal);
-        $("#hifMode").val(modelVal);
-        $("#hifEnv").val(modelVal);
-        $("#hifRestriction").val(modelVal);
-        $("#hifCustomer").val(modelVal);
+        $("#hifVersion").val(versionVal);
+        $("#hifMode").val(modeVal);
+        $("#hifEnv").val(envVal);
+        $("#hifRestriction").val(restrictionVal);
+        $("#hifCustomer").val(customerVal);
 
         //$("#<%=hifVersion.ClientID%>").val(versionVal);
         //$("#<%=hifMode.ClientID%>").val(modeVal);
@@ -96,7 +97,11 @@ $(function () {
         //$("#<%=hifRestriction.ClientID%>").val(restrictionVal);
         //$("#<%=hifCustomer.ClientID%>").val(customerVal);
 
-        
+        if ($("#divLoading:first").is(":hidden")) {
+            $("#divLoading").slideDown("slow");
+        } else {
+            $("#divLoading").addClass("divLoadinghidden");
+        }
         var itm = jQuery("#divProgress");
         //var par = jQuery(this);
         //par.attr("disabled", "disabled");
@@ -147,7 +152,7 @@ $(function () {
         //});
         
         //var intervalID = setInterval(updateProgress, 250);
-        setInterval(function(){
+        var intervalID = setInterval(function(){
             $.ajax({
                 type: "POST",
                 url: "ScoringForm.aspx/GetText",
@@ -157,6 +162,10 @@ $(function () {
                 async: true,
                 success: function (msg) {
                     $("#lblUpdate").text(msg.d);
+                    if (msg.d == "Excel Generated") {
+                        clearInterval(intervalID);
+                        location.reload();
+                    }
                 }
 
             })},250);

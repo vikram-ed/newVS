@@ -100,12 +100,20 @@ div.disableControls
     font-weight: bold;
 }
 
-#divLoading
+.divLoadingShow
 {
-    position: absolute;
-    top: 25%;
-    left: 48%;
-    opacity:1;
+    visibility: visible;
+    display: block;
+    position: relative;
+    text-align: center;
+    margin: 10% auto;
+    opacity: 1;
+}
+
+.divLoadinghidden
+{
+    visibility: hidden;
+    display: none;
 }
 
 #lblUpdate

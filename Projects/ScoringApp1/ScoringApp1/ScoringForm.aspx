@@ -29,25 +29,24 @@
             <img src="img/lexislogo.gif" alt="LexisNexis" style="text-align: left;" />
             <span class="headingTag">Scoring Regression</span>
         </div>
-        <div id="divLoading" data-opacity="1">
+        <div id="divLoading" data-opacity="1" class="divLoadinghidden">
             <img src="img/loader-waiting.gif" class="loading_circle" id="imgLoading" alt="loading" />
             <asp:UpdatePanel ID="updProgress" runat="server">
                 <ContentTemplate>
-                    <asp:Label ID="lblUpdate" runat="server" Text='<%# Eval("progress") %>'></asp:Label>
+                    <asp:Label ID="lblUpdate" runat="server" Text='<%# Eval("progress") %>' style="display:block"></asp:Label>
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="btnSubmit" />
                 </Triggers>
             </asp:UpdatePanel>
         </div>
-
-        <div id="content" style="width: 100%; background-color: #e6e6e6;">
+        <div id="content" style="width: 100%; background-color: #e6e6e6; margin-top:5px">
             <table>
                 <tr>
                     <td style="width: 33%; padding: 10px 10px 10px 10px;">
                         <div class="disableControls">
                             <asp:Label ID="lblPrevDate" runat="server" Text="Previous Date" CssClass="myLabel"></asp:Label>
-                            <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                            <asp:UpdatePanel ID="updPrevDate" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>
                                     <asp:Calendar BorderWidth="1px" DayNameFormat="FirstTwoLetters"
                                         Font-Names="Meiryo UI" Font-Size="16px" CssClass="calendar1" ID="cdrPrevDate" Visible="true"
@@ -55,7 +54,7 @@
                                         Width="250px" OnDayRender="cdrPrevDate_DayRender" OnVisibleMonthChanged="cdrPrevDate_VisibleMonthChanged">
                                         <SelectedDayStyle BackColor="#FF6666" />
                                         <SelectorStyle BackColor="#FF6666" ForeColor="White" />
-                                        <DayHeaderStyle BackColor="#d8c1c0" ForeColor="#CC0033" Font-Bold="false" Font-Size="Smaller" />
+                                        <DayHeaderStyle BackColor="#d8c1c0" ForeColor="Green" Font-Bold="false" Font-Size="Smaller" />
                                         <DayStyle BackColor="#ffffff" BorderColor="#FFFFCC" BorderWidth="1px" Font-Italic="False"
                                             Font-Names="Meiryo UI" Font-Size="Smaller" HorizontalAlign="Justify" Wrap="False" />
                                         <WeekendDayStyle BackColor="#cccccc" ForeColor="#999999" />
@@ -75,9 +74,9 @@
                         <div style="width: 100%; margin-top: 6%">
                             <select name="selModel" id="model_id" class="modelClass" tabindex="1">
                                 <option value="" style="font-weight: bolder">Model</option>
-                                <option value="RiskView">Risk View</option>
-                                <option value="FraudPoint">Fraud Point</option>
-                                <option value="LeadIntegrity">Lead Integrity</option>
+                                <option value="Risk View">Risk View</option>
+                                <option value="Fraud Point">Fraud Point</option>
+                                <option value="Lead Integrity">Lead Integrity</option>
                             </select>
                             <div class="disableControls">
                                 <select name="selVersion" id="version_id" tabindex="2">
@@ -110,7 +109,7 @@
                     <td style="width: 33%; padding: 10px 10px 10px 10px;">
                         <div id="divCurrentCal" class="disableControls">
                             <asp:Label ID="lblCurrentDate" runat="server" Text="Current Date" CssClass="myLabel"></asp:Label>
-                            <asp:UpdatePanel ID="upCdrPrevDate" runat="server" UpdateMode="Conditional">
+                            <asp:UpdatePanel ID="upCdrCurrentDate" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>
                                     <asp:Calendar BorderWidth="1px" DayNameFormat="FirstTwoLetters"
                                         Font-Names="Meiryo UI" Font-Size="16px" CssClass="calendar1" ID="cdrCurrentDate" Visible="true"
@@ -118,7 +117,7 @@
                                         Width="250px" OnDayRender="cdrCurrentDate_DayRender" OnVisibleMonthChanged="cdrCurrentDate_VisibleMonthChanged">
                                         <SelectedDayStyle BackColor="#FF6666" />
                                         <SelectorStyle BackColor="#FF6666" ForeColor="White" />
-                                        <DayHeaderStyle BackColor="#d8c1c0" ForeColor="#CC0033" Font-Bold="false" Font-Size="Smaller" />
+                                        <DayHeaderStyle BackColor="#d8c1c0" ForeColor="Green" Font-Bold="false" Font-Size="Smaller" />
                                         <DayStyle BackColor="#ffffff" BorderColor="#FFFFCC" BorderWidth="1px" Font-Italic="False"
                                             Font-Names="Meiryo UI" Font-Size="Smaller" HorizontalAlign="Justify" Wrap="False" />
                                         <WeekendDayStyle BackColor="#cccccc" ForeColor="#999999" />
@@ -127,6 +126,7 @@
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="cdrCurrentDate" />
+                                    <asp:AsyncPostBackTrigger ControlID="cdrPrevDate" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
@@ -160,7 +160,7 @@
                     <td style="width: 33%; padding: 10px 10px 10px 10px;">
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
-                                <div id="divCurrentTime" class="disableControls">
+                                <div id="divCurrentTime">
                                     <asp:DropDownList ID="ddlCurrentTime" runat="server"
                                         AppendDataBoundItems="true" DataTextField="CurrentTime"
                                         DataValueField="currentTime">
